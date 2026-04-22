@@ -18,26 +18,24 @@ jobs:
           DATE=$(TZ='Asia/Jakarta' date +'%Y-%m-%d')
           TIME=$(TZ='Asia/Jakarta' date +'%H:%M:%S')
           mkdir -p logs
-          cat >> logs/LEARNING_LOG.md << 'EOF'
           
-          ## Daily Checkpoint - $(TZ='Asia/Jakarta' date +'%Y-%m-%d')
-          
-          **Time:** $(TZ='Asia/Jakarta' date +'%H:%M:%S') WIB  
-          **Status:** ✅ Learning maintained  
-          
-          ---
-          
-          EOF
+          echo "" >> logs/LEARNING_LOG.md
+          echo "## 📅 Daily Checkpoint - $DATE" >> logs/LEARNING_LOG.md
+          echo "" >> logs/LEARNING_LOG.md
+          echo "**Time:** $TIME WIB" >> logs/LEARNING_LOG.md
+          echo "**Status:** ✅ Learning maintained" >> logs/LEARNING_LOG.md
+          echo "" >> logs/LEARNING_LOG.md
+          echo "---" >> logs/LEARNING_LOG.md
       
       - name: Commit changes
         run: |
           git config user.name "Learning Bot"
           git config user.email "action@github.com"
           git add logs/LEARNING_LOG.md
-          git diff --quiet && git diff --staged --quiet || git commit -m "Daily checkpoint - $(TZ='Asia/Jakarta' date +'%Y-%m-%d')"
+          git diff --quiet && git diff --staged --quiet || git commit -m "📚 Daily checkpoint - $DATE"
       
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: main
