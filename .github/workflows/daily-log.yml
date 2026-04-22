@@ -1,0 +1,49 @@
+name: Daily Learning Log
+
+on:
+  schedule:
+    # Runs at 20:00 WIB (13:00 UTC) every day
+    - cron: '0 13 * * *'
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  update-log:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Update Learning Log
+        run: |
+          DATE=$(TZ='Asia/Jakarta' date +'%Y-%m-%d')
+          TIME=$(TZ='Asia/Jakarta' date +'%H:%M:%S')
+          
+          # Create log file if doesn't exist
+          mkdir -p logs
+          
+          # Append daily entry
+          cat >> logs/LEARNING_LOG.md << EOF
+          
+## 📅 $DATE - Learning Checkpoint
+
+**Time:** $TIME WIB  
+**Status:** ✅ Daily commitment maintained  
+**Streak:** Consistent learning in progress  
+
+---
+
+EOF
+      
+      - name: Commit
+        run: |
+          git config user.name "Learning Bot"
+          git config user.email "action@github.com"
+          git add logs/LEARNING_LOG.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "📚 Daily log checkpoint - $DATE"
+      
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
