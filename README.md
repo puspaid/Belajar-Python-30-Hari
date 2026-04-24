@@ -68,7 +68,7 @@ progress = {
 - [x] **Day 1:** Python Installation, IDE Setup, Hello World
 - [x] **Day 2:** Data Types, Variables, Basic Operations
 - [x] **Day 3:** One-Hot Encoding, Data Transformation Techniques
-- [x] **Day 4:** Introduction to Scikit-Learn, ML Basics
+- [x] **Day 4:** Learning code to making calculator for shopee seller
 - [ ] **Day 5:** Control Flow (if/else, loops)
 - [ ] **Day 6:** Functions and Modules
 - [ ] **Day 7:** Error Handling and Debugging
