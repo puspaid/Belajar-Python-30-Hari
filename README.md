@@ -102,7 +102,7 @@ progress = {
 - [x] **Day 3** ✅ One-Hot Encoding & Data Transformation
 - [x] **Day 4** ✅ Scikit-Learn Introduction & ML Basics
 - [x] **Day 5** ✅ Control Flow (if/else, loops) & Conditionals
-- [ ] **Day 6** 🎯 Functions, Parameters, Return Values
+- [x] **Day 6** 🎯 Functions, Parameters, Return Values
 - [ ] **Day 7** 📅 Error Handling & Debugging Techniques
 
 #### **Week 2: Data Structures** (Days 8-14)
@@ -143,6 +143,47 @@ progress = {
 **Key Achievement:** Established consistent daily learning habit  
 
 ---
+### 📅 **Day 6 - April 26, 2026**
+**Topic:** Environment Variables & Secure Configuration Management
+
+**What I Learned:**
+- ✅ Why hardcoded credentials are dangerous
+- ✅ How to use python-dotenv library
+- ✅ Security best practices for managing secrets
+- ✅ Creating .env.example templates
+- ✅ Validating environment variables on startup
+- ✅ Real-world data pipeline configuration
+
+**Code Highlights:**
+```python
+# Secure database configuration
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+db_config = {
+    'host': os.getenv('DB_HOST'),
+    'password': os.getenv('DB_PASSWORD'),  # Never hardcoded!
+    'user': os.getenv('DB_USER')
+}
+```
+
+**Key Insight:**
+> "Security isn't just a feature—it's a responsibility. One exposed API key can cost thousands of dollars. Environment variables are the first line of defense."
+
+**Real-World Impact:**
+Learned industry-standard practices used by professional data scientists and engineers. This is how real production systems protect credentials.
+
+**Files Created:**
+- `dotenv_tutorial.ipynb` - Comprehensive tutorial
+- `database_config.py` - Production-ready example
+- `.env.example` - Template for configuration
+- Updated `.gitignore` - Prevent credential leaks
+
+**Time Invested:** 2.5 hours  
+**Security Level:** 🛡️🛡️🛡️🛡️🛡️ (5/5)  
+**Industry Readiness:** ⭐⭐⭐⭐⭐
 
 ### 📅 **Day 5 - April 25, 2026**
 **Topic:** Control Flow & Conditional Logic
