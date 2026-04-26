@@ -2,7 +2,7 @@
 Database Configuration Module
 Using python-dotenv for secure credential management
 
-Author: Fidyah
+Author: Puspa
 Date: April 26, 2026
 Purpose: Demonstrate best practices for environment variables
 """
