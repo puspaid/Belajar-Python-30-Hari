@@ -163,6 +163,7 @@ week_1_stats = {
 ### **Key Achievements:**
 
 🏆 **Perfect Attendance** - Not a single day missed *sadly ,i missed a single day because i get sick..huhuhu 
+
 🏆 **Consistent Commits** - Green squares every day  
 🏆 **Professional Portfolio** - Recruiter-ready GitHub  
 🏆 **Security Awareness** - Production-level practices  
