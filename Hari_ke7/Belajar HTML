@@ -1,0 +1,13 @@
+<!-- Struktur dasar HTML5 -->
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Halaman Pertamaku</title>
+  </head>
+  <body>
+    <!-- Konten halaman di sini -->
+    <h1>Hallo, Baby!</h1>
+  </body>
+</html>
