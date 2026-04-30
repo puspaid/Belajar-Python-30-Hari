@@ -1,13 +1,563 @@
-<!-- Struktur dasar HTML5 -->
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Halaman Pertamaku</title>
-  </head>
-  <body>
-    <!-- Konten halaman di sini -->
-    <h1>Hallo, Baby!</h1>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belajar HTML — Hari Ini</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f1e8;
+      --surface: #fffdf7;
+      --accent: #c0392b;
+      --accent2: #2c3e50;
+      --text: #1a1a1a;
+      --muted: #6b6359;
+      --code-bg: #2c3e50;
+      --code-text: #e8f4f8;
+      --border: #d9d2c4;
+      --tag-bg: #fdebd0;
+      --tag-color: #b7470a;
+    }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: var(--accent2);
+      color: #fff;
+      padding: 3rem 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '</>';
+      font-family: 'Space Mono', monospace;
+      font-size: 8rem;
+      color: rgba(255,255,255,0.04);
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      line-height: 1;
+      pointer-events: none;
+    }
+    header .label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #f0a500;
+      margin-bottom: 0.6rem;
+    }
+    header h1 {
+      font-family: 'Lora', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      color: #b0bec5;
+      font-size: 0.95rem;
+      font-style: italic;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      background: #e0d9cc;
+      border-radius: 4px;
+      height: 6px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: var(--accent);
+      height: 100%;
+      width: 0;
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    /* Section card */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+    .section-header:hover { background: #fef9f0; }
+
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      border-radius: 3px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-title {
+      flex: 1;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      background: var(--tag-bg);
+      color: var(--tag-color);
+      border-radius: 3px;
+      padding: 2px 7px;
+    }
+    .toggle-icon {
+      font-size: 1.1rem;
+      color: var(--muted);
+      transition: transform 0.25s;
+    }
+    .section.open .toggle-icon { transform: rotate(90deg); }
+
+    .section-body {
+      display: none;
+      padding: 1.5rem;
+    }
+    .section.open .section-body { display: block; }
+
+    /* Theory text */
+    .theory {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1.2rem;
+      border-left: 3px solid #e0d9cc;
+      padding-left: 1rem;
+      font-style: italic;
+    }
+
+    /* Code block */
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      padding: 1.2rem 1.4rem;
+      border-radius: 5px;
+      overflow-x: auto;
+      position: relative;
+      margin-bottom: 1rem;
+      tab-size: 2;
+    }
+
+    /* HTML syntax highlight */
+    .tag { color: #f39c12; }
+    .attr { color: #1abc9c; }
+    .val { color: #e74c3c; }
+    .cmt { color: #7f8c8d; font-style: italic; }
+    .txt { color: #ecf0f1; }
+
+    /* Live preview */
+    .preview-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .preview {
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      background: #fff;
+      font-size: 0.9rem;
+    }
+
+    /* Checklist */
+    .checklist {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .check-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .check-item.done { text-decoration: line-through; color: #aaa; }
+
+    /* Summary */
+    .summary-bar {
+      background: var(--accent2);
+      color: #fff;
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .summary-bar .stat { display: flex; flex-direction: column; gap: 2px; }
+    .summary-bar .stat .num { font-size: 1.4rem; font-weight: 700; color: #f0a500; }
+    .summary-bar .stat .lbl { color: #90a4ae; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* Commit badge */
+    .commit-ready {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+    .commit-badge {
+      display: inline-block;
+      background: #27ae60;
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #eee; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="label">📅 Belajar Hari Ini · HTML Fundamentals</div>
+  <h1>Belajar HTML<br>dari Nol</h1>
+  <p>Kode latihan · siap commit ke GitHub</p>
+</header>
+
+<div class="container">
+
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+
+  <!-- SECTION 1 -->
+  <div class="section open" id="s1">
+    <div class="section-header" onclick="toggle('s1')">
+      <div class="section-num">01</div>
+      <div class="section-title">Struktur Dasar HTML</div>
+      <div class="section-tag">&lt;html&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">Setiap halaman web dimulai dari kerangka ini. DOCTYPE memberi tahu browser versi HTML yang digunakan.</p>
+      <pre><span class="cmt">&lt;!-- Struktur dasar HTML5 --&gt;</span>
+<span class="tag">&lt;!DOCTYPE</span> <span class="attr">html</span><span class="tag">&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"id"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;title&gt;</span><span class="txt">Halaman Pertamaku</span><span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+  <span class="tag">&lt;body&gt;</span>
+    <span class="cmt">&lt;!-- Konten halaman di sini --&gt;</span>
+    <span class="tag">&lt;h1&gt;</span><span class="txt">Halo, Dunia!</span><span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Paham perbedaan &lt;head&gt; dan &lt;body&gt;</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Tahu fungsi DOCTYPE</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggle('s2')">
+      <div class="section-num">02</div>
+      <div class="section-title">Heading & Paragraf</div>
+      <div class="section-tag">&lt;h1&gt; – &lt;h6&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">Heading digunakan untuk hierarki judul. &lt;h1&gt; adalah yang paling penting, hanya boleh ada satu per halaman.</p>
+      <pre><span class="tag">&lt;h1&gt;</span><span class="txt">Judul Utama</span><span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span><span class="txt">Sub Judul</span><span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span><span class="txt">Sub Sub Judul</span><span class="tag">&lt;/h3&gt;</span>
+
+<span class="tag">&lt;p&gt;</span><span class="txt">Ini adalah paragraf biasa.</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;p&gt;</span><span class="txt">Paragraf baru otomatis ada jarak.</span><span class="tag">&lt;/p&gt;</span></pre>
+      <div class="preview-label">▸ Hasil di browser</div>
+      <div class="preview">
+        <h1 style="font-size:1.4rem;font-weight:700;margin-bottom:0.2rem">Judul Utama</h1>
+        <h2 style="font-size:1.1rem;font-weight:600;margin-bottom:0.2rem">Sub Judul</h2>
+        <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:0.4rem">Sub Sub Judul</h3>
+        <p style="margin-bottom:0.4rem;font-size:0.85rem">Ini adalah paragraf biasa.</p>
+        <p style="font-size:0.85rem">Paragraf baru otomatis ada jarak.</p>
+      </div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Coba buat semua level h1 s/d h6</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Tulis 3 paragraf sendiri</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggle('s3')">
+      <div class="section-num">03</div>
+      <div class="section-title">Link & Gambar</div>
+      <div class="section-tag">&lt;a&gt; &lt;img&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">Link menghubungkan halaman, gambar menampilkan visual. Atribut <code>alt</code> pada gambar penting untuk aksesibilitas.</p>
+      <pre><span class="cmt">&lt;!-- Link ke halaman lain --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://github.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>
+  <span class="txt">Kunjungi GitHub</span>
+<span class="tag">&lt;/a&gt;</span>
+
+<span class="cmt">&lt;!-- Gambar dari URL --&gt;</span>
+<span class="tag">&lt;img</span>
+  <span class="attr">src</span>=<span class="val">"https://via.placeholder.com/200x100"</span>
+  <span class="attr">alt</span>=<span class="val">"Deskripsi gambar"</span>
+  <span class="attr">width</span>=<span class="val">"200"</span>
+<span class="tag">/&gt;</span></pre>
+      <div class="preview-label">▸ Hasil di browser</div>
+      <div class="preview">
+        <a href="https://github.com" target="_blank" style="color:#c0392b;font-size:0.85rem">Kunjungi GitHub</a><br><br>
+        <div style="width:200px;height:60px;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#888;border-radius:3px">[gambar 200×100]</div>
+      </div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Buat link ke 3 website berbeda</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Tampilkan gambar dengan alt text</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggle('s4')">
+      <div class="section-num">04</div>
+      <div class="section-title">List — ul, ol, li</div>
+      <div class="section-tag">&lt;ul&gt; &lt;ol&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">ul = unordered list (bullet), ol = ordered list (angka). Keduanya berisi tag &lt;li&gt; sebagai item.</p>
+      <pre><span class="cmt">&lt;!-- List tidak berurutan --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="txt">HTML</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="txt">CSS</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="txt">JavaScript</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="cmt">&lt;!-- List berurutan --&gt;</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="txt">Belajar HTML</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="txt">Belajar CSS</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="txt">Buat Proyek</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span></pre>
+      <div class="preview-label">▸ Hasil di browser</div>
+      <div class="preview" style="display:flex;gap:3rem;flex-wrap:wrap;font-size:0.85rem">
+        <ul style="padding-left:1.2rem"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+        <ol style="padding-left:1.2rem"><li>Belajar HTML</li><li>Belajar CSS</li><li>Buat Proyek</li></ol>
+      </div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Buat daftar belanja pakai ul</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Buat langkah resep pakai ol</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggle('s5')">
+      <div class="section-num">05</div>
+      <div class="section-title">Tabel</div>
+      <div class="section-tag">&lt;table&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">Tabel HTML digunakan untuk menampilkan data tabular. Terdiri dari thead (kepala), tbody (isi), dan masing-masing baris &lt;tr&gt; berisi sel &lt;td&gt; atau &lt;th&gt;.</p>
+      <pre><span class="tag">&lt;table</span> <span class="attr">border</span>=<span class="val">"1"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th&gt;</span><span class="txt">Nama</span><span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span><span class="txt">Bahasa</span><span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span><span class="txt">Level</span><span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="txt">Budi</span><span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="txt">HTML</span><span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="txt">Pemula</span><span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span></pre>
+      <div class="preview-label">▸ Hasil di browser</div>
+      <div class="preview">
+        <table style="border-collapse:collapse;font-size:0.82rem;width:auto">
+          <thead><tr style="background:#f0ebe0"><th style="border:1px solid #ccc;padding:5px 10px">Nama</th><th style="border:1px solid #ccc;padding:5px 10px">Bahasa</th><th style="border:1px solid #ccc;padding:5px 10px">Level</th></tr></thead>
+          <tbody><tr><td style="border:1px solid #ccc;padding:5px 10px">Budi</td><td style="border:1px solid #ccc;padding:5px 10px">HTML</td><td style="border:1px solid #ccc;padding:5px 10px">Pemula</td></tr></tbody>
+        </table>
+      </div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Buat tabel jadwal pelajaran</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Tambahkan lebih dari 3 baris data</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="toggle('s6')">
+      <div class="section-num">06</div>
+      <div class="section-title">Form & Input</div>
+      <div class="section-tag">&lt;form&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">Form adalah cara pengguna mengirimkan data. Berbagai tipe input tersedia: text, email, password, checkbox, radio, dan lain-lain.</p>
+      <pre><span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"#"</span> <span class="attr">method</span>=<span class="val">"post"</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"nama"</span><span class="tag">&gt;</span><span class="txt">Nama:</span><span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">id</span>=<span class="val">"nama"</span> <span class="attr">name</span>=<span class="val">"nama"</span> <span class="attr">required</span> <span class="tag">/&gt;</span>
+
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"email"</span><span class="tag">&gt;</span><span class="txt">Email:</span><span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span> <span class="attr">id</span>=<span class="val">"email"</span> <span class="attr">name</span>=<span class="val">"email"</span> <span class="tag">/&gt;</span>
+
+  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span><span class="txt">Kirim</span><span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;/form&gt;</span></pre>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Buat form pendaftaran sederhana</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Pakai input: text, email, checkbox</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="toggle('s7')">
+      <div class="section-num">07</div>
+      <div class="section-title">Div, Span & Semantic HTML</div>
+      <div class="section-tag">&lt;div&gt; &lt;nav&gt;</div>
+      <div class="toggle-icon">▶</div>
+    </div>
+    <div class="section-body">
+      <p class="theory">div adalah wadah blok generic. span adalah wadah inline. Tapi lebih baik pakai tag semantik agar lebih mudah dibaca dan mesin pencari lebih senang!</p>
+      <pre><span class="cmt">&lt;!-- Tag semantik (lebih baik!) --&gt;</span>
+<span class="tag">&lt;header&gt;</span><span class="txt"> ... navigasi & logo</span><span class="tag">&lt;/header&gt;</span>
+<span class="tag">&lt;nav&gt;</span><span class="txt"> ... menu navigasi</span><span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;main&gt;</span>
+  <span class="tag">&lt;article&gt;</span><span class="txt"> ... konten artikel</span><span class="tag">&lt;/article&gt;</span>
+  <span class="tag">&lt;aside&gt;</span><span class="txt"> ... sidebar</span><span class="tag">&lt;/aside&gt;</span>
+<span class="tag">&lt;/main&gt;</span>
+<span class="tag">&lt;footer&gt;</span><span class="txt"> ... copyright dll</span><span class="tag">&lt;/footer&gt;</span>
+
+<span class="cmt">&lt;!-- div & span masih oke untuk styling --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"kartu"</span><span class="tag">&gt;</span>
+  <span class="txt">Harga: </span><span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"harga"</span><span class="tag">&gt;</span><span class="txt">Rp 50.000</span><span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Buat layout dengan header, main, footer</label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(this)"> Pakai minimal 3 tag semantik</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <div class="stat">
+      <div class="num" id="done-count">0</div>
+      <div class="lbl">Tugas selesai</div>
+    </div>
+    <div class="stat">
+      <div class="num">14</div>
+      <div class="lbl">Total tugas</div>
+    </div>
+    <div class="stat">
+      <div class="num">7</div>
+      <div class="lbl">Topik HTML</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="pct">0%</div>
+      <div class="lbl">Progress hari ini</div>
+    </div>
+  </div>
+
+  <div class="commit-ready">
+    <a class="commit-badge" href="https://github.com" target="_blank">
+      ✓ Commit ke GitHub
+    </a>
+    <p style="margin-top:0.8rem;font-size:0.75rem;font-family:'Space Mono',monospace;color:#999">
+      git add . &nbsp;·&nbsp; git commit -m "belajar html dasar" &nbsp;·&nbsp; git push
+    </p>
+  </div>
+
+</div>
+
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function updateProgress(cb) {
+    const all = document.querySelectorAll('input[type="checkbox"]');
+    const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+    const pct = Math.round((checked.length / all.length) * 100);
+    document.getElementById('prog').style.width = pct + '%';
+    document.getElementById('done-count').textContent = checked.length;
+    document.getElementById('pct').textContent = pct + '%';
+    const item = cb.closest('.check-item');
+    if (cb.checked) item.classList.add('done');
+    else item.classList.remove('done');
+  }
+</script>
+
+</body>
 </html>
