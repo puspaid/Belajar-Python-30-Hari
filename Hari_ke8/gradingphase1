@@ -1,29 +1,53 @@
-def calculate_grade(correct_answers, total_questions):
-    """
-    Menghitung nilai siswa berdasarkan jumlah jawaban benar 
-    dan total soal yang dinamis.
-    """
-    if total_questions <= 0:
-        return 0
-    
-    # Rumus: (Benar / Total) * 100
-    score = (correct_answers / total_questions) * 100
-    return round(score, 2)
+import pandas as pd
+import numpy as np
+from datetime import datetime
 
-def main():
-    # Simulasi data input (bisa berasal dari API atau CSV)
-    students_data = [
-        {"nama": "Andi", "benar": 15, "total_soal": 20},
-        {"nama": "Budi", "benar": 45, "total_soal": 50},
-        {"nama": "Citra", "benar": 8, "total_soal": 10},
-    ]
+def advanced_grading_engine(file_path, output_name="processed_grades.xlsx"):
+    try:
+        # Load dataset secara efisien
+        df = pd.read_excel(file_path)
+        
+        # 1. Identifikasi kolom secara dinamis
+        # Mengasumsikan kolom dimulai dengan 'Q' (Question) atau mengandung kata 'Soal'
+        question_cols = [col for col in df.columns if 'soal' in col.lower() or col.startswith('Q')]
+        
+        if not question_cols:
+            raise ValueError("Tidak ditemukan kolom soal yang valid (Gunakan prefix 'Q' atau 'Soal')")
 
-    print(f"{'Nama Student':<15} | {'Skor':<10} | {'Total Soal'}")
-    print("-" * 40)
+        # 2. Logika Pemrosesan Kompleks
+        # Menghitung jumlah soal yang diisi (non-null) per baris secara dinamis
+        df['Total_Soal_Aktif'] = df[question_cols].notna().sum(axis=1)
+        
+        # Menghitung jumlah jawaban benar (asumsi nilai 1 adalah benar)
+        df['Total_Benar'] = df[question_cols].sum(axis=1)
 
-    for student in students_data:
-        final_score = calculate_grade(student['benar'], student['total_soal'])
-        print(f"{student['nama']:<15} | {final_score:<10} | {student['total_soal']}")
+        # 3. Rumus Normalisasi Nilai
+        # Menggunakan bantuan numpy untuk menghindari 'division by zero'
+        df['Nilai_Akhir'] = np.where(
+            df['Total_Soal_Aktif'] > 0,
+            (df['Total_Benar'] / df['Total_Soal_Aktif']) * 100,
+            0
+        )
 
-if __name__ == "__main__":
-    main()
+        # 4. Predikat berbasis Ranking (Kompleksitas Tambahan)
+        conditions = [
+            (df['Nilai_Akhir'] >= 85),
+            (df['Nilai_Akhir'] >= 75),
+            (df['Nilai_Akhir'] >= 60),
+            (df['Nilai_Akhir'] < 60)
+        ]
+        values = ['A (Sangat Baik)', 'B (Baik)', 'C (Cukup)', 'D (Perlu Remedial)']
+        df['Predikat'] = np.select(conditions, values)
+
+        # 5. Metadata Export
+        df['Processed_At'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Simpan hasil
+        df.to_excel(output_name, index=False)
+        print(f"Berhasil memproses {len(df)} data siswa ke {output_name}")
+
+    except Exception as e:
+        print(f"Error pada sistem: {e}")
+
+# Cara penggunaan:
+# advanced_grading_engine("data_siswa_besar.xlsx")
