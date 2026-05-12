@@ -1,0 +1,29 @@
+def calculate_grade(correct_answers, total_questions):
+    """
+    Menghitung nilai siswa berdasarkan jumlah jawaban benar 
+    dan total soal yang dinamis.
+    """
+    if total_questions <= 0:
+        return 0
+    
+    # Rumus: (Benar / Total) * 100
+    score = (correct_answers / total_questions) * 100
+    return round(score, 2)
+
+def main():
+    # Simulasi data input (bisa berasal dari API atau CSV)
+    students_data = [
+        {"nama": "Andi", "benar": 15, "total_soal": 20},
+        {"nama": "Budi", "benar": 45, "total_soal": 50},
+        {"nama": "Citra", "benar": 8, "total_soal": 10},
+    ]
+
+    print(f"{'Nama Student':<15} | {'Skor':<10} | {'Total Soal'}")
+    print("-" * 40)
+
+    for student in students_data:
+        final_score = calculate_grade(student['benar'], student['total_soal'])
+        print(f"{student['nama']:<15} | {final_score:<10} | {student['total_soal']}")
+
+if __name__ == "__main__":
+    main()
